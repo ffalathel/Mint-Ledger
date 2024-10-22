@@ -17,16 +17,18 @@ function Header() {
         height={100}
         />
  
-      {isSignedIn?
-      <UserButton/> : 
+      {isSignedIn ?
+      <Link href="/dashboard">
+        <Button>Go to Dashboard</Button>
+      </Link>
+      : 
       <Link href = {'/sign-in'}> 
-        <Button>Get Started</Button>
+        <Button>Login</Button>
       </Link>
       }
 
-       
     </div>
   )
 }
 
-export default Header
+export default Header;

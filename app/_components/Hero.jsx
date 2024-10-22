@@ -1,7 +1,11 @@
+"use client"
 import React from 'react'
 import Image from "next/image";
+import { useUser } from "@clerk/nextjs";
+import Link from 'next/link';
 
 function Hero() {
+  const { isSignedIn } = useUser();
   return (
     <section className="bg-gray-50 flex items-center flex-col">
     <div className="mx-auto max-w-screen-xl px-4 py-32 lg: flex">
@@ -17,24 +21,33 @@ function Hero() {
         </p>
   
         <div className="mt-8 flex flex-wrap justify-center gap-4">
-          <a
-            className="block w-full rounded bg-primary px-12 py-3 text-sm font-medium text-white shadow hover:bg-green-700 focus:outline-none focus:ring active:bg-red-500 sm:w-auto"
-            href="/sign-in"
-          >
-            Get Started
-          </a>
-  
+            {isSignedIn ? (
+              <Link
+                href="/dashboard"
+                className="block w-full rounded bg-primary px-12 py-3 text-sm font-medium text-white shadow hover:bg-green-700 focus:outline-none focus:ring active:bg-red-500 sm:w-auto"
+              >
+                Go to Dashboard
+              </Link>
+            ) : (
+              <Link
+                href="/sign-in"
+                className="block w-full rounded bg-primary px-12 py-3 text-sm font-medium text-white shadow hover:bg-green-700 focus:outline-none focus:ring active:bg-red-500 sm:w-auto"
+              >
+                Get Started
+              </Link>
+            )}
+          </div>
         </div>
       </div>
-    </div>
-    <Image src = '/dash.png' alt='dash'
-  width={400}
-  height={200}
-  className = 'mt-5 rounded-xl border-2'
-  />
-  </section>
- 
-  )
+      <Image
+        src='/dash.png'
+        alt='dash'
+        width={400}
+        height={200}
+        className='mt-5 rounded-xl border-2'
+      />
+    </section>
+  );
 }
 
-export default Hero
+export default Hero;
