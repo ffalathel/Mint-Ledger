@@ -1,3 +1,4 @@
+"use client"
 import Image from "next/image";
 import Header from "./_components/Header";
 import Hero from "./_components/Hero";
@@ -33,10 +34,10 @@ export default function Home() {
                 <a href="#" className="p-2 bg-slate-800 rounded-lg hover:bg-slate-700 transition-colors duration-200">
                   <Github className="h-5 w-5" />
                 </a>
-                <a href="#" className="p-2 bg-slate-800 rounded-lg hover:bg-slate-700 transition-colors duration-200">
+                <a href="#" className="p-2 bg-slate-700 rounded-lg hover:bg-slate-600 transition-colors duration-200">
                   <Twitter className="h-5 w-5" />
                 </a>
-                <a href="#" className="p-2 bg-slate-800 rounded-lg hover:bg-slate-700 transition-colors duration-200">
+                <a href="#" className="p-2 bg-slate-700 rounded-lg hover:bg-slate-600 transition-colors duration-200">
                   <Mail className="h-5 w-5" />
                 </a>
               </div>
