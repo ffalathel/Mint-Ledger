@@ -9,7 +9,6 @@ import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
 
 function DashboardLayout({children}) {
-
   const{user}=useUser();
   const router=useRouter();
 
@@ -27,15 +26,20 @@ function DashboardLayout({children}) {
       router.replace('/dashboard/budgets');
     }
   }
+  
   return (
-    <div>
-      <div className = 'fixed md w-64 hidden md:block'>
+    <div className='min-h-screen bg-slate-50'>
+      {/* Sidebar */}
+      <div className='fixed left-0 top-0 h-full w-64 hidden lg:block z-30'>
         <SideNav />
       </div>
 
-      <div className='md:ml-64'>
+      {/* Main Content */}
+      <div className='lg:ml-64 min-h-screen'>
         <DashboardHeader />
-        {children}
+        <main className='relative'>
+          {children}
+        </main>
       </div>
     </div>
   )

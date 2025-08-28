@@ -7,14 +7,14 @@ import ExpenseListTable from './_components/ExpenseListTable';
 import { useUser } from '@clerk/nextjs';
 
 function ExpensesScreen() {
-
   const [expensesList,setExpensesList]=useState([]);
-    const {user}=useUser();
+  const {user}=useUser();
 
-    useEffect(()=>{
-        user&&getAllExpenses();
-      },[user])
-    /**
+  useEffect(()=>{
+    user&&getAllExpenses();
+  },[user])
+  
+  /**
    * Used to get All expenses belong to users
    */
   const getAllExpenses=async()=>{
@@ -28,15 +28,23 @@ function ExpensesScreen() {
     .where(eq(Budgets.createdBy,user?.primaryEmailAddress.emailAddress))
     .orderBy(desc(Expenses.id));
     setExpensesList(result);
-   
   }
+  
   return (
-    <div className='p-10'>
-      <h2 className='font-bold text-3xl'>My Expenses</h2>
+    <div className='min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6 lg:p-8'>
+      <div className='mb-8'>
+        <h1 className='font-bold text-4xl lg:text-5xl bg-gradient-to-r from-primary to-green-600 bg-clip-text text-transparent mb-2'>
+          My Expenses
+        </h1>
+        <p className='text-slate-600 text-lg max-w-2xl'>
+          Track and manage all your expenses across different budget categories.
+        </p>
+      </div>
 
-        <ExpenseListTable refreshData={()=>getAllExpenses()}
+      <ExpenseListTable 
+        refreshData={()=>getAllExpenses()}
         expensesList={expensesList}
-        />
+      />
     </div>
   )
 }

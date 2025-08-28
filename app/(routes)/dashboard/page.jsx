@@ -8,14 +8,17 @@ import { Budgets, Expenses } from '@/utils/schema';
 import BarChartDashboard from './_components/BarChartDashboard';
 import BudgetItem from './budgets/_components/BudgetItem';
 import ExpenseListTable from './expenses/_components/ExpenseListTable';
+
 function Dashboard() {
   const {user}=useUser();
 
   const [budgetList,setBudgetList]=useState([]);
   const [expensesList,setExpensesList]=useState([]);
+  
   useEffect(()=>{
     user&&getBudgetList();
   },[user])
+  
   /**
    * used to get budget List
    */
@@ -55,38 +58,60 @@ function Dashboard() {
   }
 
   return (
-    <div className='p-8'>
-        <h2 className='font-bold text-4xl'>Hi, {user?.fullName} ✌️</h2> 
-        <p className='text-gray-500'>Here's what happenning with your money, Lets Manage your expense</p>
-
-        <CardInfo budgetList={budgetList} />
-        <div className='grid grid-cols-1 lg:grid-cols-3 mt-6 gap-5'>
-          <div className='lg:col-span-2'>
-            <BarChartDashboard
-              budgetList={budgetList}
-            />
-          
-          <ExpenseListTable
-          expensesList={expensesList}
-          refreshData={()=>getBudgetList()}
-          />
-
+    <div className='min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6 lg:p-8'>
+      {/* Header Section */}
+      <div className='mb-8'>
+        <div className='flex items-center justify-between mb-4'>
+          <div>
+            <h1 className='font-bold text-4xl lg:text-5xl bg-gradient-to-r from-primary to-green-600 bg-clip-text text-transparent'>
+              Hi, {user?.fullName} ✌️
+            </h1>
+            <p className='text-slate-600 text-lg mt-2 max-w-2xl'>
+              Here's what's happening with your money. Let's manage your expenses together and stay on track with your financial goals.
+            </p>
           </div>
-          <div className='grid gap-5'>
-            <h2 className='font-bold text-lg'>Latest Budgets</h2>
-              {budgetList?.length>0?budgetList.map((budget,index)=>(
-                <BudgetItem budget={budget} key={index} />
-              ))
-            :
-              [1,2,3,4].map((item,index)=>(
-                <div className='h-[180xp] w-full
-                 bg-slate-200 rounded-lg animate-pulse'>
-                </div>
-              ))
-              
-            }
+          <div className='hidden lg:block'>
+            <UserButton />
           </div>
         </div>
+      </div>
+
+      {/* Stats Cards */}
+      <CardInfo budgetList={budgetList} />
+      
+      {/* Main Content Grid */}
+      <div className='grid grid-cols-1 xl:grid-cols-4 gap-6 mt-8'>
+        {/* Left Column - Charts and Expenses */}
+        <div className='xl:col-span-3 space-y-6'>
+          <BarChartDashboard budgetList={budgetList} />
+          <ExpenseListTable
+            expensesList={expensesList}
+            refreshData={()=>getBudgetList()}
+          />
+        </div>
+        
+        {/* Right Column - Budgets */}
+        <div className='xl:col-span-1'>
+          <div className='bg-white rounded-2xl shadow-lg border border-slate-200 p-6 sticky top-6'>
+            <h2 className='font-bold text-xl text-slate-800 mb-4 flex items-center gap-2'>
+              <span className='w-2 h-2 bg-primary rounded-full'></span>
+              Latest Budgets
+            </h2>
+            
+            <div className='space-y-4'>
+              {budgetList?.length > 0 ? 
+                budgetList.map((budget,index)=>(
+                  <BudgetItem budget={budget} key={index} />
+                ))
+                :
+                [1,2,3,4].map((item,index)=>(
+                  <div key={index} className='h-[120px] w-full bg-slate-200 rounded-xl animate-pulse'></div>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { PiggyBank, ReceiptText, Wallet } from 'lucide-react'
+import { PiggyBank, ReceiptText, Wallet, TrendingUp, TrendingDown, Target } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 
 function CardInfo({budgetList}) {
@@ -9,6 +9,7 @@ function CardInfo({budgetList}) {
     useEffect(()=>{
         budgetList&&CalculateCardInfo();
     },[budgetList])
+    
     const CalculateCardInfo=()=>{
         console.log(budgetList);
         let totalBudget_=0;
@@ -23,46 +24,66 @@ function CardInfo({budgetList}) {
             setTotalSpend(totalSpend_);
         console.log(totalBudget_,totalSpend_)
     }
+
+    const getRemainingBudget = () => totalBudget - totalSpend;
+    const getSpendingPercentage = () => totalBudget > 0 ? (totalSpend / totalBudget) * 100 : 0;
+
   return (
-    <div>
-      
-   {budgetList?.length>0?  
-   <div className='mt-7 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'> 
-       <div className='p-7 border rounded-lg flex items-center justify-between'>
-            <div>
-                <h2 className='text-sm'>Total Budget</h2>
-                <h2 className='font-bold text-2xl'>${totalBudget}</h2>
+    <div className='mb-8'>
+      {budgetList?.length > 0 ?  
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'> 
+          {/* Total Budget Card */}
+          <div className='group relative overflow-hidden bg-gradient-to-br from-primary to-green-600 rounded-2xl p-6 text-white shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1'>
+            <div className='absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16'></div>
+            <div className='relative z-10'>
+              <div className='flex items-center justify-between mb-4'>
+                <h3 className='text-sm font-medium text-white/90 uppercase tracking-wide'>Total Budget</h3>
+                <PiggyBank className='h-8 w-8 text-white/90 group-hover:scale-110 transition-transform duration-300'/>
+              </div>
+              <h2 className='font-bold text-3xl mb-2'>${totalBudget.toLocaleString()}</h2>
+              <p className='text-white/80 text-sm'>Your total allocated budget</p>
             </div>
-            <PiggyBank 
-            className='bg-primary p-3 h-12 w-12 rounded-full text-white'/>
-        </div>
-        <div className='p-7 border rounded-lg flex items-center justify-between'>
-            <div>
-                <h2 className='text-sm'>Total Spend</h2>
-                <h2 className='font-bold text-2xl'>${totalSpend}</h2>
+          </div>
+
+          {/* Total Spend Card */}
+          <div className='group relative overflow-hidden bg-gradient-to-br from-red-500 to-red-600 rounded-2xl p-6 text-white shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1'>
+            <div className='absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16'></div>
+            <div className='relative z-10'>
+              <div className='flex items-center justify-between mb-4'>
+                <h3 className='text-sm font-medium text-white/90 uppercase tracking-wide'>Total Spent</h3>
+                <ReceiptText className='h-8 w-8 text-white/90 group-hover:scale-110 transition-transform duration-300'/>
+              </div>
+              <h2 className='font-bold text-3xl mb-2'>${totalSpend.toLocaleString()}</h2>
+              <div className='flex items-center gap-2'>
+                <TrendingUp className='h-4 w-4' />
+                <p className='text-white/80 text-sm'>{getSpendingPercentage().toFixed(1)}% of budget used</p>
+              </div>
             </div>
-            <ReceiptText 
-            className='bg-primary p-3 h-12 w-12 rounded-full text-white'/>
-        </div>
-        <div className='p-7 border rounded-lg flex items-center justify-between'>
-            <div>
-                <h2 className='text-sm'>No. Of Budget</h2>
-                <h2 className='font-bold text-2xl'>{budgetList?.length}</h2>
+          </div>
+
+          {/* Remaining Budget Card */}
+          <div className='group relative overflow-hidden bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 text-white shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1'>
+            <div className='absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16'></div>
+            <div className='relative z-10'>
+              <div className='flex items-center justify-between mb-4'>
+                <h3 className='text-sm font-medium text-white/90 uppercase tracking-wide'>Remaining</h3>
+                <Target className='h-8 w-8 text-white/90 group-hover:scale-110 transition-transform duration-300'/>
+              </div>
+              <h2 className='font-bold text-3xl mb-2'>${getRemainingBudget().toLocaleString()}</h2>
+              <div className='flex items-center gap-2'>
+                <TrendingDown className='h-4 w-4' />
+                <p className='text-white/80 text-sm'>Available to spend</p>
+              </div>
             </div>
-            <Wallet 
-            className='bg-primary p-3 h-12 w-12 rounded-full text-white'/>
+          </div>
         </div>
+        :
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+          {[1,2,3].map((item,index)=>(
+            <div key={index} className='h-[140px] w-full bg-slate-200 animate-pulse rounded-2xl'></div>
+          ))}
         </div>
-    :
-    <div className='mt-7 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
-       { [1,2,3].map((item,index)=>(
-            <div className='h-[110px] w-full bg-slate-200 animate-pulse rounded-lg'>
-                
-            </div>
-    ))}
-    </div>
-    }
-  
+      }
     </div>
   )
 }
